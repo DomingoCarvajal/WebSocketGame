@@ -6,23 +6,20 @@ import Layout from '../Layout/Layout';
 const GameRoom = () => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [roomId, setRoomId] = useState('');
+  const [currentTurn, setCurrentTurn] = useState('');
   const socket = useSocket();
   const location = useLocation();
-  const [roomId, setRoomId] = useState('');
 
   useEffect(() => {
     if (!socket) return;
 
-    // Event listener for messages received from the backend
-    socket.on('message', (data => {
-      console.log(data);
-      const { sender, content } = data;
-      console.log("Sender: ", sender);
-      console.log("Content: ", content);
+    socket.on('message', (data) => {
+      const { sender, content, turn } = data;
       setMessages((prevMessages) => [...prevMessages, [sender, content].join(': ')]);
-    }));
+      setCurrentTurn(turn);
+    });
 
-    // Cleanup function to remove event listener when component unmounts
     return () => {
       socket.off('message');
     };
@@ -30,11 +27,12 @@ const GameRoom = () => {
 
   useEffect(() => {
     const { state } = location;
-    const { data } = state;
-    console.log(data);
-    if (!state) return;
-    const { roomId } = data;
-    setRoomId(roomId);
+    if (state) {
+      const { data } = state;
+      const { roomId, turn } = data;
+      setRoomId(roomId);
+      setCurrentTurn(turn);
+    }
   }, [location]);
 
   const handleInputChange = (event) => {
@@ -42,22 +40,28 @@ const GameRoom = () => {
   };
 
   const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
-    // Send message to the backend
-    socket.emit('sendMessage', {roomId, content: inputValue});
+    if (!inputValue.trim() || currentTurn !== socket.id) return; // Check if it's the user's turn
+    socket.emit('sendMessage', { roomId, content: inputValue });
     setInputValue('');
   };
 
   return (
     <Layout>
-      <div>   
+      <div>
         <input
           type="text"
           value={inputValue}
           onChange={handleInputChange}
           placeholder="Type your message..."
+          disabled={currentTurn !== socket.id} // Disable input if it's not the user's turn
         />
-        <button style={{ marginLeft: '10px' }} onClick={handleSendMessage}>Send</button>
+        <button
+          style={{ marginLeft: '10px' }}
+          onClick={handleSendMessage}
+          disabled={currentTurn !== socket.id} // Disable button if it's not the user's turn
+        >
+          Send
+        </button>
       </div>
       <div>
         <h2>Chat</h2>
