@@ -1,0 +1,14 @@
+/* Layout.css */
+.main-layout {
+    background-color: #282c34; /* Cambia este valor al color que prefieras */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  /* Agrega cualquier otro estilo general que desees */
+  

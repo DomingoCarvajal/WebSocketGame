@@ -1,0 +1,30 @@
+/* Navbar.css */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #282c34; /* Match the App-header background color */
+  color: white;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Agregamos una sombra sutil */
+  z-index: 100;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-link {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: calc(10px + 1vmin); /* Adjust font size to match the App component */
+}
+
+.navbar-link:hover {
+  text-decoration: underline;
+}
+
+  
