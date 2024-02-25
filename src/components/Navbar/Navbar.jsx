@@ -1,4 +1,3 @@
-// Navbar.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css'; // Importa el CSS del Navbar
@@ -14,7 +13,6 @@ const Navbar = () => {
           Play
         </Link>
       </div>
-      {/* Quarto componente será renderizado en la ruta /quarto */}
     </nav>
   );
 };
