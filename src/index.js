@@ -3,8 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App';
-
-import GameRoom from './components/GameRoom/GameRoom';
+import GameRoom from './pages/GameRoom/GameRoom';
 import reportWebVitals from './reportWebVitals';
 import { SocketProvider } from './socket/SocketContext';
 import './index.css';
@@ -24,7 +23,6 @@ root.render(
       </Router>
     </SocketProvider>
   </React.StrictMode>,
-  document.getElementById('root')
 );
 
 reportWebVitals();

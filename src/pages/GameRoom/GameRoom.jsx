@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSocket } from '../../socket/SocketContext';
 import { useLocation } from 'react-router-dom';
-import Layout from '../Layout/Layout';
+import Layout from '../../components/Layout/Layout';
+import AutoComplete from '../../components/AutoComplete/AutoComplete';
 
 const GameRoom = () => {
   const [messages, setMessages] = useState([]);
-  const [inputValue, setInputValue] = useState('');
   const [roomId, setRoomId] = useState('');
   const [currentTurn, setCurrentTurn] = useState('');
   const socket = useSocket();
@@ -35,33 +35,15 @@ const GameRoom = () => {
     }
   }, [location]);
 
-  const handleInputChange = (event) => {
-    setInputValue(event.target.value);
-  };
-
-  const handleSendMessage = () => {
-    if (!inputValue.trim() || currentTurn !== socket.id) return; // Check if it's the user's turn
-    socket.emit('sendMessage', { roomId, content: inputValue });
-    setInputValue('');
+  const handlePlayerSelect = (playerName) => {
+    if (currentTurn !== socket.id) return; // Check if it's the user's turn
+    socket.emit('sendMessage', { roomId, content: playerName });
   };
 
   return (
     <Layout>
       <div>
-        <input
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder="Type your message..."
-          disabled={currentTurn !== socket.id} // Disable input if it's not the user's turn
-        />
-        <button
-          style={{ marginLeft: '10px' }}
-          onClick={handleSendMessage}
-          disabled={currentTurn !== socket.id} // Disable button if it's not the user's turn
-        >
-          Send
-        </button>
+        <AutoComplete onPlayerSelect={handlePlayerSelect} currentTurn={currentTurn} socket={socket} />
       </div>
       <div>
         <h2>Chat</h2>
