@@ -1,0 +1,22 @@
+/* GameRoom.css */
+
+.game-room-container {
+    width: 500px;
+    margin: 0 auto; /* Center the container horizontally */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .auto-complete-input {
+    flex: 1; /* Allow the input to grow and shrink */
+    min-width: 500px; /* Set a minimum width for the input */
+    margin-right: 20px; /* Add margin to create space between the input and timer */
+  }
+
+.timer {
+  color: white;
+  font-size: 16px;
+  margin-left: 20px; /* Adjust the margin as needed */
+  /* Add any additional styling here */
+}

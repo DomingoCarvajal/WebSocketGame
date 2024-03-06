@@ -35,7 +35,7 @@ const PlayerSearch = ({ onPlayerSelect, currentTurn, socket }) => {
         player.toLowerCase().includes(value.toLowerCase())
       );
       setFilteredPlayers(filtered);
-      setShowDropdown(true);
+      setShowDropdown(filtered.length > 0);
     } else {
       setShowDropdown(false);
     }

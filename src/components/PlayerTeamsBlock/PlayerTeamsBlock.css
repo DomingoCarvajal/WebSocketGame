@@ -1,0 +1,44 @@
+.player-teams-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Align items horizontally in the center */
+  margin-bottom: 20px; /* Add some margin between player blocks */
+}
+
+.player-info {
+  background-color: #28a745;
+  padding: 10px;
+  height: 50px;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 10px; /* Add rounded edges to playerName section */
+  border: 2px solid #fff; /* Add solid border to playerName section */
+}
+
+.player-name {
+  font-weight: bold;
+  color: #fff;
+}
+
+.teams {
+  margin-top: 10px;
+  color: #000;
+  height: 100px;
+  width: 250px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.team-name {
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  color: #fff;
+  text-align: center;
+}
