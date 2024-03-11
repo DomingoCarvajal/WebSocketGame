@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getPlayers } from '../../requests/apiQueries';
 import './PlayerSearch.css';
 
 const PlayerSearch = ({ onPlayerSelect, currentTurn, socket }) => {
@@ -11,16 +12,20 @@ const PlayerSearch = ({ onPlayerSelect, currentTurn, socket }) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/player-names')
-      .then(response => response.json())
-      .then(data => {
-        if (Array.isArray(data.playerNames)) {
-          setPlayerList(data.playerNames);
+    const fetchPlayerNames = async () => {
+      try {
+        const data = await getPlayers();
+        if (Array.isArray(data.players)) {
+          setPlayerList(data.players);
         } else {
-          console.error('Invalid player list:', data.playerNames);
+          console.error('Invalid player list:', data.players);
         }
-      })
-      .catch(error => console.error('Error fetching players:', error));
+      } catch (error) {
+        console.error('Error fetching players:', error);
+      }
+    };
+  
+    fetchPlayerNames();
   }, []);
 
   useEffect(() => {
@@ -32,19 +37,19 @@ const PlayerSearch = ({ onPlayerSelect, currentTurn, socket }) => {
     setInputValue(value);
     if (value.length >= 2) {
       const filtered = playerList.filter(player =>
-        player.toLowerCase().includes(value.toLowerCase())
+        (player.playerName.toLowerCase() + ' ').includes(value.toLowerCase())
       );
-      setFilteredPlayers(filtered);
+      setFilteredPlayers(filtered); // Show only the first 5 suggestions
       setShowDropdown(filtered.length > 0);
     } else {
       setShowDropdown(false);
     }
   };
 
-  const handlePlayerSelect = (playerName) => {
-    setInputValue(playerName);
+  const handlePlayerSelect = (player) => {
+    setInputValue(player.playerName);
     setShowDropdown(false);
-    onPlayerSelect(playerName);
+    onPlayerSelect(player);
   };
 
   const handleOutsideClick = (event) => {
@@ -73,29 +78,29 @@ const PlayerSearch = ({ onPlayerSelect, currentTurn, socket }) => {
 
   return (
     <div className="input-container">
-        <input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder="Search players..."
-            className="input-field"
-            disabled={isInputDisabled}
-            ref={inputRef}
-        />
-        {showDropdown && (
-            <div className="dropdown" ref={dropdownRef}>
-            {filteredPlayers.map((player, index) => (
-                <div 
-                key={index} 
-                onClick={() => handlePlayerSelect(player)}
-                className="dropdown-item"
-                >
-                {player}
-                </div>
-            ))}
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder="Search players..."
+        className="input-field"
+        disabled={isInputDisabled}
+        ref={inputRef}
+      />
+      {showDropdown && (
+        <div className="dropdown" ref={dropdownRef}>
+          {filteredPlayers.map((player, index) => (
+            <div 
+              key={index} 
+              onClick={() => handlePlayerSelect(player)}
+              className="dropdown-item"
+            >
+              {player.playerName}
             </div>
-        )}
+          ))}
         </div>
+      )}
+    </div>
   );
 };
 

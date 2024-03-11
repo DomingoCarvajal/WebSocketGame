@@ -44,16 +44,18 @@ const GameRoom = () => {
     const { state } = location;
     if (state) {
       const { data } = state;
-      const { roomId, turn } = data;
+      const { roomId, turn, startingPlayer } = data;
       setRoomId(roomId);
       setCurrentTurn(turn);
+      setPlayerInfo([{ playerName: startingPlayer, teams: [] }]);
     }
   }, [location]);
 
-  const handlePlayerSelect = (playerName) => {
+  const handlePlayerSelect = (player) => {
     if (currentTurn !== socket.id) return; // Check if it's the user's turn
-    socket.emit('sendMessage', { roomId, content: playerName });
+    socket.emit('sendMessage', { roomId, content: player});
   };
+
 
   return (
     <Layout>
