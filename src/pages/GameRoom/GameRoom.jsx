@@ -29,7 +29,8 @@ const GameRoom = () => {
       } else if (status === 'InvalidPlay') {
         setErrorMessage(`${content}`);
       } else if (status === 'GameOver') {
-        setErrorMessage(content);
+        console.log(socket.id, 'Game over!');
+        setErrorMessage(content === socket.id ? 'You lose!' : 'You win!');
       }
 
       setCurrentTurn(turn);
